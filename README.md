@@ -4,6 +4,8 @@ A lightweight Windows desktop front-end for downloading video and audio from You
 
 ---
 
+![Example](https://github.com/p3k22/yt-dlp-p3ks-wpf-front-end/blob/main/preview1.png)
+
 ## Features
 
 - **Video + Audio, Video Only, or Audio Only** — pick the media streams you need
