@@ -28,18 +28,18 @@
          var ytdlpPath = Path.Combine(binariesFilePath, ytdlpFileName);
          var ffmpegPath = Path.Combine(binariesFilePath, ffmpegFileName);
 
-         var videoFormat = downloadParams.Quality == "best" ?
-                              "bestvideo" :
-                              $"bestvideo[height<={downloadParams.Quality}]";
+         var heightFilter = downloadParams.Quality == "best" ?
+                              string.Empty :
+                              $"[height<={downloadParams.Quality}]";
 
          var arguments = downloadParams.Format switch
             {
                0 =>
-                  $"-o \"{downloadParams.OutputPath}\" --no-playlist --no-warnings --newline --progress-template \"download:%(progress._percent_str)s %(progress._speed_str)s ETA %(progress._eta_str)s\" --ffmpeg-location \"{ffmpegPath}\" -f \"{videoFormat}+bestaudio\" --merge-output-format {downloadParams.FileType} --remux-video {downloadParams.FileType} \"{downloadParams.Url}\"",
+                  $"-o \"{downloadParams.OutputPath}\" --no-playlist --no-warnings --newline --progress-template \"download:%(progress._percent_str)s %(progress._speed_str)s ETA %(progress._eta_str)s\" --ffmpeg-location \"{ffmpegPath}\" -f \"bestvideo{heightFilter}+bestaudio/best{heightFilter}/best\" --merge-output-format {downloadParams.FileType} --remux-video {downloadParams.FileType} \"{downloadParams.Url}\"",
                1 =>
-                  $"-o \"{downloadParams.OutputPath}\" --no-playlist --no-warnings --newline --progress-template \"download:%(progress._percent_str)s %(progress._speed_str)s ETA %(progress._eta_str)s\" --ffmpeg-location \"{ffmpegPath}\" -f \"{videoFormat}\" --remux-video {downloadParams.FileType} \"{downloadParams.Url}\"",
+                  $"-o \"{downloadParams.OutputPath}\" --no-playlist --no-warnings --newline --progress-template \"download:%(progress._percent_str)s %(progress._speed_str)s ETA %(progress._eta_str)s\" --ffmpeg-location \"{ffmpegPath}\" -f \"bestvideo{heightFilter}/best{heightFilter}/best\" --remux-video {downloadParams.FileType} \"{downloadParams.Url}\"",
                2 =>
-                  $"-o \"{downloadParams.OutputPath}\" --no-playlist --no-warnings --newline --progress-template \"download:%(progress._percent_str)s %(progress._speed_str)s ETA %(progress._eta_str)s\" --ffmpeg-location \"{ffmpegPath}\" -x --audio-format {downloadParams.FileType} -f bestaudio \"{downloadParams.Url}\"",
+                  $"-o \"{downloadParams.OutputPath}\" --no-playlist --no-warnings --newline --progress-template \"download:%(progress._percent_str)s %(progress._speed_str)s ETA %(progress._eta_str)s\" --ffmpeg-location \"{ffmpegPath}\" -x --audio-format {downloadParams.FileType} -f \"bestaudio/best\" \"{downloadParams.Url}\"",
                _ => throw new ArgumentOutOfRangeException(
                     nameof(downloadParams),
                     $"Unknown format: {downloadParams.Format}")
