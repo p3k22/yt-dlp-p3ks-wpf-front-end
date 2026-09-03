@@ -14,7 +14,11 @@
 # Rider / VS Code / JetBrains
 .idea/
 .vscode/
-*.csproj
-*.sln
 *.DotSettings
-*.bat
+
+# .NET build output (bin/ and obj/ also carry their own .gitignore)
+*.user
+*.Backup.tmp
+
+# Runtime binaries - BinaryUtils downloads these on first launch
+Resources/Bin/
